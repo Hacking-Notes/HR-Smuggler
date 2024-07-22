@@ -1,3 +1,5 @@
+![image](https://github.com/user-attachments/assets/842b69ed-75da-47df-abf0-9e40c021bc7b)
+
 # Request Smuggling Detection Tool
 
 This tool is designed to detect potential HTTP request smuggling vulnerabilities in web applications. It supports both HTTP/1.1 and HTTP/2 request smuggling techniques and provides detailed analysis of the responses.

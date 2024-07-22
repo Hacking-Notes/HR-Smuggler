@@ -1,8 +1,6 @@
-
 import requests
 import argparse
 import random
-import logging
 from urllib.parse import urlparse
 from colorama import Fore, Style, init
 
@@ -27,15 +25,6 @@ def ensure_scheme(url):
 def get_random_user_agent():
     return random.choice(USER_AGENTS)
 
-
-def log_request_response(response):
-    logging.info(f"Request URL: {response.request.url}")
-    logging.info(f"Request Headers: {response.request.headers}")
-    logging.info(f"Request Body: {response.request.body}")
-    logging.info(f"Response Status Code: {response.status_code}")
-    logging.info(f"Response Headers: {response.headers}")
-    logging.info(f"Response Body: {response.text[:200]}")  # Log first 200 characters of response body
-
 def te_cl_smuggling(url, collaborator_url):
     headers = {
         "Host": urlparse(url).netloc,
@@ -50,7 +39,6 @@ def te_cl_smuggling(url, collaborator_url):
         "\r\n"
     )
     response = requests.post(url, headers=headers, data=body)
-    log_request_response(response)
     return response
 
 def cl_te_smuggling(url, collaborator_url):
@@ -67,7 +55,6 @@ def cl_te_smuggling(url, collaborator_url):
         "\r\n"
     )
     response = requests.post(url, headers=headers, data=body)
-    log_request_response(response)
     return response
 
 
@@ -87,7 +74,6 @@ def http2_smuggling(url, collaborator_url):
         "SMUGGLED\r\n"
     )
     response = requests.post(url, headers=headers, data=body)
-    log_request_response(response)
     return response
 
 
@@ -199,7 +185,15 @@ def detailed_check(response1, response2, url):
         indicators.append("Response bodies")
 
     if indicators:
-        print(f"{Fore.GREEN}Potential Request Smuggling Detected at: {Style.RESET_ALL}{url} ---> {', '.join(indicators)}")
+        print(f"""{Fore.GREEN}Potential Request Smuggling Detected at: {Style.RESET_ALL}{url} ---> {', '.join(indicators)}
+{Fore.YELLOW}TE.CL Response Body:{Style.RESET_ALL}
+{body_snippet1}
+                
+<----------------------->
+ 
+{Fore.YELLOW}CL.TE Response Body:{Style.RESET_ALL}          
+{body_snippet2}
+                """)
     else:
         print(
             f"{Fore.YELLOW}No clear indicators of request smuggling detected at {url}. Further manual inspection may be required.{Style.RESET_ALL}")
@@ -215,7 +209,7 @@ def process_single_url(url, burp_url):
     ██║  ██║   ██║      ██║   ██║         ███████║██║ ╚═╝ ██║╚██████╔╝╚██████╔╝███████╗██║██║ ╚████║╚██████╔╝███████╗
     ╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚═╝         ╚══════╝╚═╝     ╚═╝ ╚═════╝  ╚═════╝  ╚═════╝ ╚══════╝╚═╝╚═╝  ╚═══╝ ╚═════╝ 
 
-    By: K, Hacking Notes & ShadowByte                                                                                                       
+    By: Hacking Notes                                                                                                   
     """)
     print("Select the option:")
     print(f"{Fore.GREEN}1{Style.RESET_ALL}. HTTP/1.1 Request Smuggling (TE.CL and CL.TE)")
@@ -248,7 +242,7 @@ def process_urls_from_file(file_path, burp_url):
     ██║  ██║   ██║      ██║   ██║         ███████║██║ ╚═╝ ██║╚██████╔╝╚██████╔╝███████╗██║██║ ╚████║╚██████╔╝███████╗
     ╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚═╝         ╚══════╝╚═╝     ╚═╝ ╚═════╝  ╚═════╝  ╚═════╝ ╚══════╝╚═╝╚═╝  ╚═══╝ ╚═════╝ 
 
-    By: K, Hacking Notes & ShadowByte                                                                                                     
+    By: Hacking Notes                                                                                                  
     """)
 
     print("Select the option:")
@@ -261,8 +255,6 @@ def process_urls_from_file(file_path, burp_url):
     for url in urls:
         process_urls(url, burp_url, option)
 
-    print("")
-    print(f"{Fore.YELLOW}For more in-depth analysis, check the logs.{Style.RESET_ALL}")
     print("")
     print(f"{Fore.GREEN}Next steps:{Style.RESET_ALL}")
     print("1. Check the Burp Collaborator server to see if any unexpected requests were received.")

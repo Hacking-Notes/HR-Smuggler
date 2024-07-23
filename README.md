@@ -63,6 +63,8 @@ If potential request smuggling is detected, further steps are suggested for veri
 ## Author
 
 Hacking Notes
+K
+ShadowByte                                                                                                  
 
 ---
 

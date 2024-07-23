@@ -191,9 +191,8 @@ def detailed_check(response1, response2, url):
         print(f"""{Fore.GREEN}Potential Request Smuggling Detected at: {Style.RESET_ALL}{url} ---> {', '.join(indicators)}
 {Fore.YELLOW}TE.CL Response Body:{Style.RESET_ALL}
 {body_snippet1}
-                
-╚════════════════════════════════════════════════╝
-╔════════════════════════════════════════════════╗
+
+〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜
  
 {Fore.YELLOW}CL.TE Response Body:{Style.RESET_ALL}          
 {body_snippet2}

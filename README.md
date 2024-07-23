@@ -62,9 +62,9 @@ If potential request smuggling is detected, further steps are suggested for veri
 
 ## Author
 
-Hacking Notes
-K
-ShadowByte                                                                                                  
+<a href="https://github.com/hacking-notes">Hacking Notes</a><br>
+K<br>
+<a href="https://github.com/ShadowByte1">ShadowByte</a>                                                                                             
 
 ---
 

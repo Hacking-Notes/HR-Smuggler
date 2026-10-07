@@ -1,3 +1,11 @@
+<div align="center">
+
+<kbd>&nbsp;REQUEST SMUGGLING&nbsp;</kbd> &nbsp; <kbd>&nbsp;HTTP/1.1&nbsp;</kbd> &nbsp; <kbd>&nbsp;HTTP/2&nbsp;</kbd> &nbsp; 
+
+[![Website](https://img.shields.io/badge/WEBSITE-hacking--notes.com-ff3333?style=flat-square&labelColor=000000)](https://hacking-notes.com)
+
+</div>
+
 ![image](https://github.com/user-attachments/assets/842b69ed-75da-47df-abf0-9e40c021bc7b)
 
 # Request Smuggling Detection Tool
@@ -21,8 +29,8 @@ git clone https://github.com/Hacking-Notes/HR-Smuggler.git
 ## Usage
 
 ```bash
-python request_smuggling.py -u <target_url> -b <burp_collaborator_url>
-python request_smuggling.py -f <file_with_urls> -b <burp_collaborator_url>
+python HR_Smuggler.py -u <target_url> -b <burp_collaborator_url>
+python HR_Smuggler.py -f <file_with_urls> -b <burp_collaborator_url>
 ```
 
 - **-u, --url**: Single URL to test
@@ -34,13 +42,13 @@ python request_smuggling.py -f <file_with_urls> -b <burp_collaborator_url>
 ### Testing a Single URL
 
 ```bash
-python request_smuggling.py -u http://example.com -b http://collaborator.com
+python HR_Smuggler.py -u http://example.com -b http://collaborator.com
 ```
 
 ### Testing Multiple URLs from a File
 
 ```bash
-python request_smuggling.py -f urls.txt -b http://collaborator.com
+python HR_Smuggler.py -f urls.txt -b http://collaborator.com
 ```
 
 ## Detailed Check
@@ -59,3 +67,18 @@ If potential request smuggling is detected, further steps are suggested for veri
 2. Verify if the Collaborator URL was accessed during the test.
 3. Perform additional tests to understand the impact and potential exploitation paths.
 4. Document the findings and report the vulnerability if confirmed.
+
+<br>
+
+<div align="center">
+
+### ───────────────  HACKING NOTES ECOSYSTEM  ───────────────
+
+[![Website](https://img.shields.io/badge/🌐_WEBSITE-hacking--notes.com-ff3333?style=flat-square&labelColor=000000)](https://hacking-notes.com)
+[![Roadmap](https://img.shields.io/badge/🗺_ROADMAP-Hacker--Roadmap-f5f5f5?style=flat-square&labelColor=000000)](https://github.com/Hacking-Notes/Hacker-Roadmap)
+[![RedTeam](https://img.shields.io/badge/🔴_RED_TEAM-notes-ff3333?style=flat-square&labelColor=000000)](https://github.com/Hacking-Notes/RedTeam)
+[![BlueTeam](https://img.shields.io/badge/🔵_BLUE_TEAM-notes-3388ff?style=flat-square&labelColor=000000)](https://github.com/Hacking-Notes/BlueTeam)
+
+<sub><code>// part of the Hacking Notes toolkit — hacking-notes.com</code></sub>
+
+</div>
